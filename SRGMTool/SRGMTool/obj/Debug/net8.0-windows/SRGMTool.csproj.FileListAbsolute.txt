@@ -18,3 +18,4 @@ C:\Users\shiko\OneDrive\Desktop\project_verification\SRGMTool\SRGMTool\obj\Debug
 C:\Users\shiko\OneDrive\Desktop\project_verification\SRGMTool\SRGMTool\obj\Debug\net8.0-windows\SRGMTool.pdb
 C:\Users\shiko\OneDrive\Desktop\project_verification\SRGMTool\SRGMTool\obj\Debug\net8.0-windows\SRGMTool.genruntimeconfig.cache
 C:\Users\shiko\OneDrive\Desktop\project_verification\SRGMTool\SRGMTool\obj\Debug\net8.0-windows\ref\SRGMTool.dll
+C:\Users\shiko\OneDrive\Desktop\project_verification\SRGMTool\SRGMTool\obj\Debug\net8.0-windows\SRGMTool.sourcelink.json

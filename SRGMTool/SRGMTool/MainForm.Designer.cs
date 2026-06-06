@@ -22,10 +22,10 @@ namespace SRGMTool
         // Left panel controls
         private GroupBox grpModels;
         private TableLayoutPanel modelsInner;
-        private CheckBox chkGeneralGoel;
-        private CheckBox chkGompertzMakeham;
-        private CheckBox chkZhang;
-        private CheckBox chkMusaOkumoto;
+        private CheckBox chkGoelOkumoto;
+        private CheckBox chkInflectionSShaped;
+        private CheckBox chkYamadaExponential;
+        private CheckBox chkWeibull;
 
         private GroupBox grpParameters;
         private RichTextBox rtbParameters;
@@ -95,14 +95,14 @@ namespace SRGMTool
             pnlToolbar.Controls.Add(toolFlow);
 
             // --- Model checkboxes ---
-            chkGeneralGoel     = new CheckBox { Text = "General Goel",     Checked = true, AutoSize = true, Margin = new Padding(4, 4, 4, 2) };
-            chkGompertzMakeham = new CheckBox { Text = "Gompertz-Makeham", Checked = true, AutoSize = true, Margin = new Padding(4, 2, 4, 2) };
-            chkZhang           = new CheckBox { Text = "Zhang",            Checked = true, AutoSize = true, Margin = new Padding(4, 2, 4, 2) };
-            chkMusaOkumoto     = new CheckBox { Text = "Musa-Okumoto",     Checked = true, AutoSize = true, Margin = new Padding(4, 2, 4, 4) };
-            chkGeneralGoel.CheckedChanged     += ModelCheckbox_CheckedChanged;
-            chkGompertzMakeham.CheckedChanged += ModelCheckbox_CheckedChanged;
-            chkZhang.CheckedChanged           += ModelCheckbox_CheckedChanged;
-            chkMusaOkumoto.CheckedChanged     += ModelCheckbox_CheckedChanged;
+            chkGoelOkumoto       = new CheckBox { Text = "Goel-Okumoto",       Checked = true, AutoSize = true, Margin = new Padding(4, 4, 4, 2) };
+            chkInflectionSShaped = new CheckBox { Text = "Inflection S-Shaped", Checked = true, AutoSize = true, Margin = new Padding(4, 2, 4, 2) };
+            chkYamadaExponential = new CheckBox { Text = "Yamada Exponential",  Checked = true, AutoSize = true, Margin = new Padding(4, 2, 4, 2) };
+            chkWeibull           = new CheckBox { Text = "Weibull",             Checked = true, AutoSize = true, Margin = new Padding(4, 2, 4, 4) };
+            chkGoelOkumoto.CheckedChanged       += ModelCheckbox_CheckedChanged;
+            chkInflectionSShaped.CheckedChanged += ModelCheckbox_CheckedChanged;
+            chkYamadaExponential.CheckedChanged += ModelCheckbox_CheckedChanged;
+            chkWeibull.CheckedChanged           += ModelCheckbox_CheckedChanged;
 
             modelsInner = new TableLayoutPanel
             {
@@ -116,10 +116,10 @@ namespace SRGMTool
             modelsInner.RowStyles.Add(new RowStyle(SizeType.Percent, 25f));
             modelsInner.RowStyles.Add(new RowStyle(SizeType.Percent, 25f));
             modelsInner.RowStyles.Add(new RowStyle(SizeType.Percent, 25f));
-            modelsInner.Controls.Add(chkGeneralGoel,     0, 0);
-            modelsInner.Controls.Add(chkGompertzMakeham, 0, 1);
-            modelsInner.Controls.Add(chkZhang,           0, 2);
-            modelsInner.Controls.Add(chkMusaOkumoto,     0, 3);
+            modelsInner.Controls.Add(chkGoelOkumoto,       0, 0);
+            modelsInner.Controls.Add(chkInflectionSShaped, 0, 1);
+            modelsInner.Controls.Add(chkYamadaExponential, 0, 2);
+            modelsInner.Controls.Add(chkWeibull,           0, 3);
 
             grpModels = new GroupBox
             {

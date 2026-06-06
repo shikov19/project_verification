@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SRGMTool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+28ddfa92c2278337b138515bd4d48a957fcfd6f9")]
 [assembly: System.Reflection.AssemblyProductAttribute("SRGMTool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SRGMTool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

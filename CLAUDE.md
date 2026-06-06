@@ -33,7 +33,7 @@ SRGMTool/
 |---|---|
 | GUI | C# WinForms, .NET 8 |
 | Charts | **OxyPlot.WinForms** NuGet package |
-| Computation | Python 3 + scipy + numpy + matplotlib |
+| Computation | Python 3 + scipy + numpy |
 | Data format | CSV (two columns: time period, cumulative bugs) |
 | Communication | C# spawns Python as subprocess, reads JSON output via stdout |
 
@@ -43,38 +43,39 @@ SRGMTool/
 
 ### Python packages required (user must have these)
 ```
-pip install numpy scipy matplotlib
+pip install numpy scipy
 ```
 
 ---
 
 ## The 4 SRGM Models
 
-All models use `NonlinearModelFit` equivalent via `scipy.optimize.curve_fit`.
+All models use `scipy.optimize.curve_fit` for parameter estimation.
 
-### 1. General Goel (studied)
+### 1. Goel-Okumoto (studied — Goel & Okumoto, 1979)
 ```
-m(t) = a * (1 - exp(-b * t^c))
+m(t) = a * (1 - exp(-b * t))
 ```
-Parameters: `a` (total expected bugs), `b` (failure rate), `c` (shape)
+Parameters: `a` (total expected bugs), `b` (failure rate)
 
-### 2. Gompertz-Makeham (studied)
+### 2. Inflection S-Shaped (studied — Yamada, Ohba & Osaki, 1984)
 ```
-m(t) = a * (1 - exp(-λ*t - (α/β)*(exp(β*t) - 1)))
+m(t) = a * (1 - exp(-b*t)) / (1 + β * exp(-b*t))
 ```
-Parameters: `a`, `λ`, `α`, `β`
+Parameters: `a` (total expected bugs), `b` (failure rate), `β` (shape/inflection)
 
-### 3. Zhang (non-studied — the "unstudied model")
+### 3. Yamada Exponential (studied — Yamada, 1986)
 ```
-m(t) = a * (1 - ((1 + α) * exp(-b*t)) / (1 + α * exp(-b*t)))
+m(t) = a * (1 - exp(-r * α * (1 - exp(-β*t))))
 ```
-Parameters: `a`, `α`, `b`
+Parameters: `a` (total expected bugs), `r` (testing effort), `α`, `β`
 
-### 4. Musa-Okumoto (studied)
+### 4. Weibull SRGM (non-studied — based on Weibull, 1951)
 ```
-m(t) = a * ln(1 + b*t)
+m(t) = a * (1 - exp(-(t/β)^α))
 ```
-Parameters: `a`, `b`
+Parameters: `a` (total expected bugs), `α` (shape), `β` (scale)
+Reference: Weibull, W. (1951). "A statistical distribution function of wide applicability." Journal of Applied Mechanics, 18, 293–297.
 
 ---
 
@@ -92,16 +93,16 @@ The script must:
 ```json
 {
   "models": {
-    "GeneralGoel": {
-      "params": {"a": 549.1, "b": 0.017, "c": 1.12},
+    "GoelOkumoto": {
+      "params": {"a": 549.1, "b": 0.017},
       "metrics": {"AIC": 317.3, "BIC": 324.2, "RSquared": 0.9983, "AdjRSquared": 0.9982},
       "curve": [[1, 7.2], [2, 14.1], ...]
     },
-    "GompertzMakeham": { ... },
-    "Zhang": { ... },
-    "MusaOkumoto": { ... }
+    "InflectionSShaped": { ... },
+    "YamadaExponential": { ... },
+    "Weibull": { ... }
   },
-  "best_model": "GompertzMakeham",
+  "best_model": "InflectionSShaped",
   "data": [[1, 7], [2, 8], ...],
   "predictions": [[43, 345], [44, 347], ...]
 }
@@ -139,11 +140,11 @@ If fitting fails for any model, include `"error": "message"` in that model's obj
 
 ### Left Panel contents
 - **GroupBox** "Models" with 4 checkboxes (all checked by default):
-  - `[ ] General Goel`
-  - `[ ] Gompertz-Makeham`
-  - `[ ] Zhang`
-  - `[ ] Musa-Okumoto`
-- **GroupBox** "Parameters" with a `RichTextBox` (read-only) showing fitted params for the selected/best model
+  - `[ ] Goel-Okumoto`
+  - `[ ] Inflection S-Shaped`
+  - `[ ] Yamada Exponential`
+  - `[ ] Weibull`
+- **GroupBox** "Parameters" with a `RichTextBox` (read-only) showing fitted params for the best model
 - **GroupBox** "Prediction" with a small `DataGridView` showing future periods + predicted cumulative bugs
 
 ### Chart area (OxyPlot `PlotView`)
@@ -160,13 +161,23 @@ Columns: `Model | AIC | BIC | R² | Adj. R²`
 
 ---
 
+## C# Model Name Mappings
+
+| Python key | UI Label |
+|---|---|
+| `GoelOkumoto` | `Goel-Okumoto` |
+| `InflectionSShaped` | `Inflection S-Shaped` |
+| `YamadaExponential` | `Yamada Exponential` |
+| `Weibull` | `Weibull` |
+
+---
+
 ## C# ↔ Python Communication
 
 ```csharp
-// Pseudocode — implement in a helper class PythonRunner.cs
 var process = new Process {
     StartInfo = new ProcessStartInfo {
-        FileName = "python",          // or "python3"
+        FileName = "python",
         Arguments = $"srgm.py \"{csvPath}\"",
         RedirectStandardOutput = true,
         RedirectStandardError = true,
@@ -179,7 +190,6 @@ process.Start();
 string json = process.StandardOutput.ReadToEnd();
 string err  = process.StandardError.ReadToEnd();
 process.WaitForExit();
-// Parse json with Newtonsoft.Json
 ```
 
 - Run the subprocess **asynchronously** (use `async/await`) so the UI doesn't freeze
@@ -201,11 +211,11 @@ process.WaitForExit();
 
 The CSV has **no header**, two columns:
 ```
-1,7
-2,8
-3,36
+1,62
+2,209
+3,444
 ...
-42,352
+40,9508
 ```
 Column 1 = time period index, Column 2 = cumulative bug count.
 
@@ -218,20 +228,3 @@ Column 1 = time period index, Column 2 = cumulative bug count.
 - Use `OxyPlot` model/series API correctly — do not draw manually on a Canvas
 - Comments in English
 - No hardcoded file paths — always use file dialogs or relative paths
-
----
-
-## What to Build First (suggested order)
-
-1. `srgm.py` — get the Python computation working and outputting correct JSON
-2. `MainForm` layout — scaffold the UI with placeholder controls
-3. `PythonRunner.cs` — subprocess call + JSON parsing
-4. Wire up `Load CSV` → `Run Analysis` → populate chart and table
-5. Model checkboxes toggling curves on/off in the chart
-6. Parameters panel + predictions table
-
----
-
-## Sample Data
-
-The file `data/data.csv` contains 42 records from the TROPICO R-1500 switching system test (Brazilian telecom, ~300KB assembly software, 1500 subscribers). Records 1–30 are from the VALIDATION phase, records 31–42 from FIELD TRIALS.

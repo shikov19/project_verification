@@ -21,18 +21,18 @@ namespace SRGMTool
 
         private static readonly Dictionary<string, OxyColor> ModelColors = new()
         {
-            ["GeneralGoel"]      = OxyColors.Blue,
-            ["GompertzMakeham"]  = OxyColors.Red,
-            ["Zhang"]            = OxyColors.Green,
-            ["MusaOkumoto"]      = OxyColors.Orange
+            ["GoelOkumoto"]       = OxyColors.Blue,
+            ["InflectionSShaped"] = OxyColors.Red,
+            ["YamadaExponential"] = OxyColors.Green,
+            ["Weibull"]           = OxyColors.Orange
         };
 
         private static readonly Dictionary<string, string> ModelLabels = new()
         {
-            ["GeneralGoel"]      = "General Goel",
-            ["GompertzMakeham"]  = "Gompertz-Makeham",
-            ["Zhang"]            = "Zhang",
-            ["MusaOkumoto"]      = "Musa-Okumoto"
+            ["GoelOkumoto"]       = "Goel-Okumoto",
+            ["InflectionSShaped"] = "Inflection S-Shaped",
+            ["YamadaExponential"] = "Yamada Exponential",
+            ["Weibull"]           = "Weibull"
         };
 
         public MainForm()
@@ -246,10 +246,10 @@ namespace SRGMTool
 
         private CheckBox? GetModelCheckbox(string modelName) => modelName switch
         {
-            "GeneralGoel"     => chkGeneralGoel,
-            "GompertzMakeham" => chkGompertzMakeham,
-            "Zhang"           => chkZhang,
-            "MusaOkumoto"     => chkMusaOkumoto,
+            "GoelOkumoto"       => chkGoelOkumoto,
+            "InflectionSShaped" => chkInflectionSShaped,
+            "YamadaExponential" => chkYamadaExponential,
+            "Weibull"           => chkWeibull,
             _ => null
         };
 
