@@ -1,7 +1,7 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
-    "net8.0-windows7.0": {
+    "net8.0-windows": {
       "Newtonsoft.Json/13.0.4": {
         "type": "package",
         "compile": {
@@ -122,7 +122,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net8.0-windows7.0": [
+    "net8.0-windows": [
       "Newtonsoft.Json >= 13.0.4",
       "OxyPlot.WindowsForms >= 2.2.0"
     ]
@@ -152,7 +152,8 @@
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net8.0-windows7.0": {
+        "net8.0-windows": {
+          "framework": "net8.0-windows7.0",
           "targetAlias": "net8.0-windows",
           "projectReferences": {}
         }
@@ -167,10 +168,11 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
-      "net8.0-windows7.0": {
+      "net8.0-windows": {
+        "framework": "net8.0-windows7.0",
         "targetAlias": "net8.0-windows",
         "dependencies": {
           "Newtonsoft.Json": {
@@ -196,19 +198,19 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.15, 8.0.15]"
+            "version": "[8.0.27, 8.0.27]"
           },
           {
             "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[8.0.15, 8.0.15]"
+            "version": "[8.0.27, 8.0.27]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.15, 8.0.15]"
+            "version": "[8.0.27, 8.0.27]"
           },
           {
             "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.15, 8.0.15]"
+            "version": "[8.0.27, 8.0.27]"
           }
         ],
         "frameworkReferences": {
@@ -219,7 +221,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
